@@ -4,23 +4,20 @@ from sqlalchemy.orm import Session
 from src.core.dependencies import get_db
 from src.models.vendor import Vendor
 from src.models.vendor_quote import VendorQuote
-from src.agent.procurement_agent import ProcurementAgent
+from src.agent.workflow import build_graph
 
-router = APIRouter(prefix="/ai", tags=["AI Procurement"])
+router = APIRouter(prefix="/ai", tags=["AI Agent"])
 
 
 @router.get("/evaluate/{request_id}")
-def evaluate_request(request_id: int, db: Session = Depends(get_db)):
+def evaluate(request_id: int, db: Session = Depends(get_db)):
 
-    # Get all quotes for this request
     quotes = db.query(VendorQuote).filter(
         VendorQuote.request_id == request_id
     ).all()
 
-    # Get all vendors
     vendors = db.query(Vendor).all()
 
-    # Convert to simple dicts
     quote_data = [
         {
             "vendor_id": q.vendor_id,
@@ -39,8 +36,12 @@ def evaluate_request(request_id: int, db: Session = Depends(get_db)):
         for v in vendors
     ]
 
-    # Run AI engine
-    agent = ProcurementAgent()
-    result = agent.evaluate_vendors(quote_data, vendor_data)
+    graph = build_graph()
+
+    result = graph.invoke({
+        "request_id": request_id,
+        "quotes": quote_data,
+        "vendors": vendor_data
+    })
 
     return result

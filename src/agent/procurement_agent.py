@@ -1,33 +1,59 @@
+from datetime import datetime
+
 class ProcurementAgent:
 
-    def evaluate_quotes(self, quotes):
+    def evaluate_vendors(self, quotes, vendors):
         """
-        Simple scoring system (we will later replace with LangGraph + LLM)
+        This is the AI decision engine for SmartProc.
+        It compares vendors and recommends the best one.
         """
+
+        scored_results = []
 
         best_vendor = None
-        best_score = 0
+        best_score = -1
+        reasoning = []
 
-        results = []
+        for quote in quotes:
 
-        for q in quotes:
-            score = (
-                (1 / q["price"]) * 40 +
-                (1 / q["delivery_days"]) * 30 +
-                (q["rating"]) * 30
+            vendor = next(
+                (v for v in vendors if v["id"] == quote["vendor_id"]),
+                None
             )
 
-            results.append({
-                "vendor": q["vendor"],
-                "score": score
-            })
+            if not vendor:
+                continue
 
-            if score > best_score:
-                best_score = score
-                best_vendor = q["vendor"]
+            # --- SCORING LOGIC (AI decision rules) ---
+            price_score = 1000 / quote["price"]  # lower price = better
+            delivery_score = 1 / quote["delivery_days"]  # faster delivery = better
+            rating_score = vendor["rating"] * 10
+
+            total_score = (price_score * 0.4) + (delivery_score * 0.3) + (rating_score * 0.3)
+
+            result = {
+                "vendor_id": vendor["id"],
+                "vendor_name": vendor["name"],
+                "price": quote["price"],
+                "delivery_days": quote["delivery_days"],
+                "score": round(total_score, 2)
+            }
+
+            scored_results.append(result)
+
+            reasoning.append(
+                f"{vendor['name']} scored {round(total_score,2)} "
+                f"(price={quote['price']}, delivery={quote['delivery_days']} days, rating={vendor['rating']})"
+            )
+
+            if total_score > best_score:
+                best_score = total_score
+                best_vendor = result
 
         return {
             "best_vendor": best_vendor,
-            "score": best_score,
-            "ranking": results
+            "all_scores": scored_results,
+            "reasoning": reasoning,
+            "confidence": round(best_score, 2),
+            "generated_at": datetime.utcnow().isoformat()
         }
