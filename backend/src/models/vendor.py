@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float
-from src.core.database import Base
+from backend.src.core.database import Base
 
 class Vendor(Base):
     __tablename__ = "vendors"

@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, END
-from src.agent.state import ProcurementState
-from src.agent.nodes import (
+from backend.src.agent.state import ProcurementState
+from backend.src.agent.nodes import (
     load_data,
     evaluate_vendors,
     generate_reasoning,

@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from src.core.dependencies import get_db
-from src.models.vendor import Vendor
-from src.models.vendor_quote import VendorQuote
-from src.agent.procurement_agent import ProcurementAgent
+from backend.src.core.dependencies import get_db
+from backend.src.models.vendor import Vendor
+from backend.src.models.vendor_quote import VendorQuote
+from backend.src.agent.procurement_agent import ProcurementAgent
 
 router = APIRouter(prefix="/ai", tags=["AI Procurement"])
 

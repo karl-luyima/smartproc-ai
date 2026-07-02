@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text
-from src.core.database import Base
+from backend.src.core.database import Base
 
 class ProcurementRequest(Base):
     __tablename__ = "procurement_requests"

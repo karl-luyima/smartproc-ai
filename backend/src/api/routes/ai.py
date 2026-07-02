@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from src.core.dependencies import get_db
-from src.models.vendor import Vendor
-from src.models.vendor_quote import VendorQuote
+from backend.src.core.dependencies import get_db
+from backend.src.models.vendor import Vendor
+from backend.src.models.vendor_quote import VendorQuote
 
-from src.agent.workflow import build_graph
-from src.agent.report import generate_report
-from src.agent.llm_engine import explain_decision
-from src.agent.memory import save_decision
+from backend.src.agent.workflow import build_graph
+from backend.src.agent.report import generate_report
+from backend.src.agent.llm_engine import explain_decision
+from backend.src.agent.memory import save_decision
 
 router = APIRouter(prefix="/ai", tags=["AI Agent"])
 

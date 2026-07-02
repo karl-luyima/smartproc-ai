@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 
-from src.core.database import Base, engine
-from src.api.routes import ai, vendor, quotes, procurement
+from backend.src.api.routes import procurement, quotes, vendor
+from backend.src.core.database import Base, engine
+from backend.src.api.routes import ai
 
 app = FastAPI(title="SmartProc AI")
 
@@ -13,6 +14,6 @@ app.include_router(quotes.router)
 app.include_router(procurement.router)
 
 
-@app.get("/")
+@app.get("/") 
 def root():
     return {"status": "SmartProc running"}

@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from src.core.dependencies import get_db
-from src.models.vendor_quote import VendorQuote
-from src.schemas.vendor_quote import VendorQuoteCreate
+from backend.src.core.dependencies import get_db
+from backend.src.models.vendor_quote import VendorQuote
+from backend.src.schemas.vendor_quote import VendorQuoteCreate
 
 router = APIRouter(prefix="/quotes", tags=["Quotes"])
 
