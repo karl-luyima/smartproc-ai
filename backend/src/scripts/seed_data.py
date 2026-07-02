@@ -1,9 +1,9 @@
 import random
 from sqlalchemy.orm import Session
-from backend.src.core.database import SessionLocal
-from backend.src.models.vendor import Vendor
-from backend.src.models.vendor_quote import VendorQuote
-from backend.src.models.procurement_request import ProcurementRequest 
+from src.core.database import SessionLocal
+from src.models.vendor import Vendor
+from src.models.vendor_quote import VendorQuote
+from src.models.procurement_request import ProcurementRequest 
 
 
 def seed_data():
